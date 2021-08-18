@@ -17,21 +17,19 @@
 		<nav class="navbar navbar-expand-lg bg-light navbar-dark">
 			<a class="nav-brand" th:href="@{/}"><img
 				th:src="@{/images/shopmeAdminSmall.png}" /> </a>
-				 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-		<!-- 	<button class="navbar-toggler" type="button" data-toggle="collapse"
+			<!-- 	<button class="navbar-toggler" type="button" data-toggle="collapse"
 				data-target="#navbarSupportedContent"
 				aria-controls="navbarSupportedContent" aria-expanded="false"
 				aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
 		 -->
-		 	<div class="collapse navbar-collapae" id="navbarSupportedContent">
+			<div class="collapse navbar-collapae" id="navbarSupportedContent">
 				<ul class="navbar-nav mr-auto">
 					<li class="nav-item active"><a class="nav-link"
 						th:href="@{/users}"> <img
-				th:src="@{/images/shopmeAdminSmall.png}" /> USER </a></li>
+							th:src="@{/images/shopmeAdminSmall.png}" /> USER
+					</a></li>
 					<li class="nav-item"><a class="nav-link"
 						th:href="@{/Categories}"> Categories </a></li>
 					<li class="nav-item"><a class="nav-link" th:href="@{/brands}">
@@ -54,17 +52,50 @@
 						th:href="@{/settings}"> Settings</a></li>
 				</ul>
 			</div>
-			</nav>
+		</nav>
 	</div>
-		<ul><li ><a 
-						th:href="@{/users}"> <img
-				th:src="@{/images/shopmeAdminSmall.png}" /> USER </a></li>
-		</ul>
+	<ul>
+		<li><a th:href="@{/users}"> USER </a></li>
+	</ul>
 	<div class="container-fluid text-center">
 		<div class="container">
-			<h1>Shopme Control Panel</h1>
+			<h1>Shopme USER SECTION</h1>
+			<a th:href="@{/users/new}"> Create New User </a>
 		</div>
+		<div th:if="${message}" class="alert alert-success text-center">
+			[[${message}]]</div>
+
 		<div>
+			<table
+				class="table table-bordered table-striped  table-hover table-responsive-xl">
+				<thead class="thead-dark">
+					<tr>
+						<th>User Id</th>
+						<th>Photos</th>
+						<th>Email</th>
+						<th>First Name</th>
+						<th>Last Name</th>
+						<th>Enabled</th>
+						<th>Roles</th>
+						<th>ACtion</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="user : ${listUsers}">
+						<td>[[${user.id}]]</td>
+						<td></td>
+						<td>[[${user.email}]]</td>
+						<td>[[${user.firstName}]]</td>
+						<td>[[${user.lastName}]]</td>
+						<td>[[${user.roles}]]</td>
+						<td>[[${user.enabled}]]</td>
+						<td>Edit &nbsp; Delete</td>
+				</tbody>
+			</table>
+
+		</div>
+
+		<div class="text-centre">
 			<p>Shopme Control Panel - Copyright &copy; Shopme</p>
 		</div>
 	</div>
