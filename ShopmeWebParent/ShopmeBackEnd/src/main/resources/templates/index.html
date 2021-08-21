@@ -1,72 +1,17 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="viewport"
-	content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-<title>Home - Admin Panel</title>
-<link rel="stylesheet"
-	th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
-<script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
-<script type="text/javascript"
-	th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
-
+<th:block th:include="fragments :: headerfiles">  </th:block>
 </head>
 <body>
-	<div>
-		<nav class="navbar navbar-expand-lg bg-light navbar-dark">
-			<a class="nav-brand" th:href="@{/}"><img
-				th:src="@{/images/shopmeAdminSmall.png}" /> </a>
-				 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-		<!-- 	<button class="navbar-toggler" type="button" data-toggle="collapse"
-				data-target="#navbarSupportedContent"
-				aria-controls="navbarSupportedContent" aria-expanded="false"
-				aria-label="Toggle navigation">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-		 -->
-		 	<div class="collapse navbar-collapae" id="navbarSupportedContent">
-				<ul class="navbar-nav mr-auto">
-					<li class="nav-item active"><a class="nav-link"
-						th:href="@{/users}"> <img
-				th:src="@{/images/shopmeAdminSmall.png}" /> USER </a></li>
-					<li class="nav-item"><a class="nav-link"
-						th:href="@{/Categories}"> Categories </a></li>
-					<li class="nav-item"><a class="nav-link" th:href="@{/brands}">
-							Brands </a></li>
-					<li class="nav-item"><a class="nav-link"
-						th:href="@{/products}"> Products</a></li>
-					<li class="nav-item"><a class="nav-link"
-						th:href="@{/customers}"> Customers </a></li>
-					<li class="nav-item"><a class="nav-link"
-						th:href="@{/Shipping}"> Shipping</a></li>
-					<li class="nav-item"><a class="nav-link" th:href="@{/report}">
-							Sales Report </a></li>
-					<li class="nav-item"><a class="nav-link" th:href="@{/orders}">
-							Orders</a></li>
-					<li class="nav-item"><a class="nav-link"
-						th:href="@{/articles}"> Articles </a></li>
-					<li class="nav-item"><a class="nav-link" th:href="@{/menus}">
-							Menus</a></li>
-					<li class="nav-item"><a class="nav-link"
-						th:href="@{/settings}"> Settings</a></li>
-				</ul>
-			</div>
-			</nav>
-	</div>
-		<ul><li ><a 
-						th:href="@{/users}"> <img
-				th:src="@{/images/shopmeAdminSmall.png}" /> USER </a></li>
-		</ul>
+<th:block th:include="fragments :: navbarfiles"> </th:block>
+	
+		
 	<div class="container-fluid text-center">
 		<div class="container">
 			<h1>Shopme Control Panel</h1>
 		</div>
-		<div>
-			<p>Shopme Control Panel - Copyright &copy; Shopme</p>
-		</div>
+		<th:block th:include="fragments :: footerfiles"> </th:block>
 	</div>
 </body>
 </html>

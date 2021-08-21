@@ -1,62 +1,15 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="viewport"
-	content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-<title>Home - Admin Panel</title>
-<link rel="stylesheet"
-	th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
-<script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
-<script type="text/javascript"
-	th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
-
+<th:block th:include="fragments :: headerfiles">
+</th:block>
 </head>
 <body>
-	<div>
-		<nav class="navbar navbar-expand-lg bg-light navbar-dark">
-			<a class="nav-brand" th:href="@{/}"><img
-				th:src="@{/images/shopmeAdminSmall.png}" /> </a>
-			<!-- 	<button class="navbar-toggler" type="button" data-toggle="collapse"
-				data-target="#navbarSupportedContent"
-				aria-controls="navbarSupportedContent" aria-expanded="false"
-				aria-label="Toggle navigation">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-		 -->
-			<div class="collapse navbar-collapae" id="navbarSupportedContent">
-				<ul class="navbar-nav mr-auto">
-					<li class="nav-item active"><a class="nav-link"
-						th:href="@{/users}"> <img
-							th:src="@{/images/shopmeAdminSmall.png}" /> USER
-					</a></li>
-					<li class="nav-item"><a class="nav-link"
-						th:href="@{/Categories}"> Categories </a></li>
-					<li class="nav-item"><a class="nav-link" th:href="@{/brands}">
-							Brands </a></li>
-					<li class="nav-item"><a class="nav-link"
-						th:href="@{/products}"> Products</a></li>
-					<li class="nav-item"><a class="nav-link"
-						th:href="@{/customers}"> Customers </a></li>
-					<li class="nav-item"><a class="nav-link"
-						th:href="@{/Shipping}"> Shipping</a></li>
-					<li class="nav-item"><a class="nav-link" th:href="@{/report}">
-							Sales Report </a></li>
-					<li class="nav-item"><a class="nav-link" th:href="@{/orders}">
-							Orders</a></li>
-					<li class="nav-item"><a class="nav-link"
-						th:href="@{/articles}"> Articles </a></li>
-					<li class="nav-item"><a class="nav-link" th:href="@{/menus}">
-							Menus</a></li>
-					<li class="nav-item"><a class="nav-link"
-						th:href="@{/settings}"> Settings</a></li>
-				</ul>
-			</div>
-		</nav>
-	</div>
-	<ul>
-		<li><a th:href="@{/users}"> USER </a></li>
-	</ul>
+	<th:block th:include="fragments :: modalfiles">
+	</th:block>
+	<th:block th:include="fragments :: navbarfiles">
+	</th:block>
+
 	<div class="container-fluid text-center">
 		<div class="container">
 			<h1>Shopme USER SECTION</h1>
@@ -77,27 +30,101 @@
 						<th>Last Name</th>
 						<th>Enabled</th>
 						<th>Roles</th>
-						<th>ACtion</th>
+						<th>Action</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr th:each="user : ${listUsers}">
 						<td>[[${user.id}]]</td>
-						<td></td>
+						<td><span th:if="${user.photos == null}"
+							class="fas fa-portrait fa-2x icon-silver"> </span> <img
+							th:if="${user.photos != null}"
+							th:src="@{${user.photosImagePath}}" alt"" width="70px" /></td>
 						<td>[[${user.email}]]</td>
 						<td>[[${user.firstName}]]</td>
 						<td>[[${user.lastName}]]</td>
 						<td>[[${user.roles}]]</td>
-						<td>[[${user.enabled}]]</td>
-						<td>Edit &nbsp; Delete</td>
+						<td><a th:if="${user.enabled == true}"
+							class="fas fa-check-circle fa-2x icon-green"
+							th:href="@{'/users/' + ${user.id} + '/enabled/false'}"
+							title="Click Here! to Disable"></a> <a
+							th:if="${user.enabled == false}"
+							class="fas fa-check-circle fa-2x icon-dark"
+							th:href="@{'/users/' + ${user.id} + '/enabled/true'}"
+							title="Click Here! to Enable"></a></td>
+
+						<td><a class="fas fa-edit fa-2x icon-green"
+							th:href="@{'/users/edit/'+${user.id}}"
+							title="Click! here to Edit"></a> &nbsp; <a
+							class="fas fa-trash fa-2x icon-dark Link-Delete"
+							th:href="@{'/users/delete/'+${user.id}}" th:userIds="${user.id}"
+							title="Click! here to Delete"></a></td>
 				</tbody>
 			</table>
 
 		</div>
+		<div th:if="${totalItems >0}">
+			<span>Showing user # [[${startCount}]] to [[${endCount}]] of
+				[[${totalItems}]]</span>
+		</div>
+		<div th:unless="${totalItems >0}">
+			<span>No Users to Show! </span>
+		</div>
+		<div>
+			<nav >
+				<ul class="pagination justify-content-center hover">
+					<li th:class="${currentPage >1  ? 'page-item' : 'page-item disabled'}">
+					<a class="page-link" th:href="@{/users/page/1}">First</a></li>
+					<li th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
+					<a class="page-link" th:href="@{'/users/page/' + ${currentPage -1}}">Previous</a></li>
+					
+					<li th:class="${currentPage != i ? 'page-item' : 'page-item active'}" th:each="i : ${#numbers.sequence(1, totalPages)}">
+					<a class="page-link" th:href="@{'/users/page/' + ${i}}">[[${i}]]</a>
+					</li>
 
-		<div class="text-centre">
-			<p>Shopme Control Panel - Copyright &copy; Shopme</p>
+					<li th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}">
+					<a class="page-link" th:href="@{'/users/page/' + ${currentPage +1}}">Next</a></li>
+					<li th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}">
+					<a class="page-link" th:href="@{'/users/page/' + ${totalPages}}">Last</a></li>
+				</ul>
+			</nav>
 		</div>
 	</div>
+
+	<th:block th:include="fragments :: footerfiles">
+	</th:block>
+
+	<script type="text/javascript">
+		$(document).ready(
+				function() {
+					$(".Link-Delete").on(
+							"click",
+							function(e) {
+								e.preventDefault();
+								link = $(this);
+								userId = link.attr("userIds");
+								hrefAttr = link.attr("href");
+								//alert($(this).attr("href"));
+								showModalDialog("Delete Confirmation",
+										"Are You sure! you want to delete user id "
+												+ userId + " ?", hrefAttr)
+							});
+				});
+
+		function showModalDialog(title, message, hAttr) {
+			//alert("ModalDialog");
+
+			$("#modalTitle").text(title);
+			$("#modalBody").text(message);
+			$("#modalYes-Btn").attr("href", hrefAttr);
+			$("#modalYesButtonText").text("Yes");
+			$("#modalYes-Btn").attr("class", "btn btn-success");
+			$("#modal-button").text("No");
+
+			$("#modalDialog").modal();
+
+		}
+	</script>
+
 </body>
 </html>

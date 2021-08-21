@@ -12,129 +12,130 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
-@Table(name="users")
+@Table(name = "users")
 public class User {
 
-		@Id
-		@GeneratedValue(strategy = GenerationType.IDENTITY)
-		private Integer id;
-		@Column(name = "first_name",  length = 45, nullable = false)
-		private String firstName;
-		
-		@Column(name = "last_name",  length = 45, nullable = false)
-		private String lastName;
-		
-		@Column(length = 64, nullable = false)
-		private String password;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
+	@Column(name = "first_name", length = 45, nullable = false)
+	private String firstName;
 
-		@Column(length = 128, unique = true)
-		private String email;
-		private String	 photos;
-		private boolean enabled;
-		
-		@ManyToMany
-		@JoinTable(
-				name = "users_roles",
-				joinColumns = @JoinColumn(name = "user_id"),
-				inverseJoinColumns = @JoinColumn(name="role_id")
-				)
-		private Set<Role> roles = new HashSet<>();
+	@Column(name = "last_name", length = 45, nullable = false)
+	private String lastName;
 
-		public Integer getId() {
-			return id;
-		}
+	@Column(length = 64, nullable = false)
+	private String password;
 
-		public void setId(Integer id) {
-			this.id = id;
-		}
+	@Column(length = 128, unique = true)
+	private String email;
+	private String photos;
+	private boolean enabled;
 
-		public String getFirstName() {
-			return firstName;
-		}
+	@ManyToMany
+	@JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+	private Set<Role> roles = new HashSet<>();
 
-		public void setFirstName(String firstName) {
-			this.firstName = firstName;
-		}
+	public Integer getId() {
+		return id;
+	}
 
-		public String getLastName() {
-			return lastName;
-		}
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
-		public void setLastName(String lastName) {
-			this.lastName = lastName;
-		}
+	public String getFirstName() {
+		return firstName;
+	}
 
-		public String getPassword() {
-			return password;
-		}
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
 
-		public void setPassword(String password) {
-			this.password = password;
-		}
+	public String getLastName() {
+		return lastName;
+	}
 
-		public String getEmail() {
-			return email;
-		}
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
 
-		public void setEmail(String email) {
-			this.email = email;
-		}
+	public String getPassword() {
+		return password;
+	}
 
-		public String getPhotos() {
-			return photos;
-		}
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
-		public void setPhotos(String photos) {
-			this.photos = photos;
-		}
+	public String getEmail() {
+		return email;
+	}
 
-		public boolean isEnabled() {
-			return enabled;
-		}
-
-		public void setEnabled(boolean enabled) {
-			this.enabled = enabled;
-		}
-
-		public Set<Role> getRoles() {
-			return roles;
-		}
-
-		public void setRoles(Set<Role> roles) {
-			this.roles = roles;
-		}
-
-		public User() {
-		}
-
-		public User(String email, String password, String firstName, String lastName,  String photos, boolean enabled,
-				Set<Role> roles) {
-			this.firstName = firstName;
-			this.lastName = lastName;
-			this.password = password;
-			this.email = email;
-			this.photos = photos;
-			this.enabled = enabled;
-			this.roles = roles;
-		}
-
-		/*
-		 * public User(String email, String password, String firstName, String lastName)
-		 * { this.firstName = firstName; this.lastName = lastName; this.password =
-		 * password; this.email = email; }
-		 */
-
-		public void addRole(Role role) {
-			this.roles.add(role);
-		}
-
-		@Override
-		public String toString() {
-			return "User [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", password=" + password
-					+ ", email=" + email + ", photos=" + photos + ", enabled=" + enabled + ", roles=" + roles + "]";
-		}
+	public void setEmail(String email) {
+		this.email = email;
+	}
 	
+	public String getPhotos() {
+		return photos;
+	}
+
+	public void setPhotos(String photos) {
+		this.photos = photos;
+	}
+
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
+
+	public Set<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Set<Role> roles) {
+		this.roles = roles;
+	}
+
+	public User() {
+	}
+
+	/*
+	 * public User(String email, String password, String firstName, String lastName,
+	 * String photos, boolean enabled, Set<Role> roles) { this.firstName =
+	 * firstName; this.lastName = lastName; this.password = password; this.email =
+	 * email; this.photos = photos; this.enabled = enabled; this.roles = roles; }
+	 */
+
+	public User(String email, String password, String firstName, String lastName) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.password = password;
+		this.email = email;
+	}
+
+	public void addRole(Role role) {
+		this.roles.add(role);
+	}
+
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", password=" + password
+				+ ", email=" + email + ", photos=" + photos + ", enabled=" + enabled + ", roles=" + roles + "]";
+	}
+
+	@Transient
+	public String getPhotosImagePath() {
+		if (id==null || photos == null) return "/images/default-user.png";
 		
+		return "/user-photos/" + this.id + "/" + this.photos;
+	}
+	
 }
+

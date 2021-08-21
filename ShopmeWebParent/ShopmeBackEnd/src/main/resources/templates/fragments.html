@@ -1,0 +1,94 @@
+
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<div th:fragment="headerfiles">
+	<meta charset="UTF-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+		<title>Shopme | [[${pageTitle}]]</title>
+		
+		<link rel="stylesheet" type="text/css" th:href="@{/fontawesome/all.css}" />
+		<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
+		<link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
+		
+		<script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+		<script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+	
+	</div>
+<div th:fragment="modalfiles">
+	<div class="modal fade" id="modalDialog" tabindex="-1" role="dialog">
+		<div class=" modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title" id="modalTitle"></h4>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<span id="modalBody"></span>
+				</div>
+				<div class="modal-footer">
+					 <a class=" " href="" id="modalYes-Btn"><span id="modalYesButtonText"></span></a>
+					<button type="button" class="btn btn-danger" data-dismiss="modal"><span id="modal-button"></span></button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div> <!-- Modal ends  here  -->
+
+	<div th:fragment="navbarfiles">
+	<div>
+		<nav class="navbar navbar-expand-lg navbar-light bg-light ">
+			<a class="nav-brand" th:href="@{/}"><img
+				th:src="@{/images/shopmeAdminSmall.png}" /> </a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse"
+				data-target="#navbarSupportedContent"
+				aria-controls="navbarSupportedContent" aria-expanded="false"
+				aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+		 
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item active"><a class="nav-link"
+						th:href="@{/users}"> USER
+					</a></li>
+					<li class="nav-item"><a class="nav-link"
+						th:href="@{/Categories}"> Categories </a></li>
+					<li class="nav-item"><a class="nav-link" th:href="@{/brands}">
+							Brands </a></li>
+					<li class="nav-item"><a class="nav-link"
+						th:href="@{/products}"> Products</a></li>
+					<li class="nav-item"><a class="nav-link"
+						th:href="@{/customers}"> Customers </a></li>
+					<li class="nav-item"><a class="nav-link"
+						th:href="@{/Shipping}"> Shipping</a></li>
+					<li class="nav-item"><a class="nav-link" th:href="@{/report}">
+							Sales Report </a></li>
+					<li class="nav-item"><a class="nav-link" th:href="@{/orders}">
+							Orders</a></li>
+					<li class="nav-item"><a class="nav-link"
+						th:href="@{/articles}"> Articles </a></li>
+					<li class="nav-item"><a class="nav-link" th:href="@{/menus}">
+							Menus</a></li>
+					<li class="nav-item"><a class="nav-link"
+						th:href="@{/settings}"> Settings</a></li>
+				</ul>
+			</div>
+		</nav>
+	</div>
+	</div><!-- navbarfiles ends here  -->
+	
+	<div th:fragment="footerfiles">
+		<div class="text-center">
+		<p>Shopme Control Panel - Copyright &copy; Shopme</p>
+	</div>
+	</div>
+</body>
+</html>

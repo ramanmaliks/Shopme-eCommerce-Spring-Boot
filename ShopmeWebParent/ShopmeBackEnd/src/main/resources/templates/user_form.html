@@ -1,117 +1,62 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="viewport"
-	content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-<title>Home - Admin Panel</title>
-<link rel="stylesheet"
-	th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
-<script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
-<script type="text/javascript"
-	th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
-
+<th:block th:include="fragments :: headerfiles">  </th:block>
 </head>
 <body>
-	<div class="modal fade text-center" id="modalDialog" tabindex="-1"
-		role="dialog">
-		<div class=" modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title" id="modalTitle">Warning</h4>
-					<button type="button" class="close" data-dismiss="modal"
-						aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<div class="modal-body">
-					<span id="modalBody"></span>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div>
-		<nav class="navbar navbar-expand-lg bg-light navbar-dark">
-			<a class="nav-brand" th:href="@{/}"><img
-				th:src="@{/images/shopmeAdminSmall.png}" /> </a>
-			<!-- 	<button class="navbar-toggler" type="button" data-toggle="collapse"
-				data-target="#navbarSupportedContent"
-				aria-controls="navbarSupportedContent" aria-expanded="false"
-				aria-label="Toggle navigation">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-		 -->
-			<div class="collapse navbar-collapae" id="navbarSupportedContent">
-				<ul class="navbar-nav mr-auto">
-					<li class="nav-item active"><a class="nav-link"
-						th:href="@{/users}"> <img
-							th:src="@{/images/shopmeAdminSmall.png}" /> USER
-					</a></li>
-					<li class="nav-item"><a class="nav-link"
-						th:href="@{/Categories}"> Categories </a></li>
-					<li class="nav-item"><a class="nav-link" th:href="@{/brands}">
-							Brands </a></li>
-					<li class="nav-item"><a class="nav-link"
-						th:href="@{/products}"> Products</a></li>
-					<li class="nav-item"><a class="nav-link"
-						th:href="@{/customers}"> Customers </a></li>
-					<li class="nav-item"><a class="nav-link"
-						th:href="@{/Shipping}"> Shipping</a></li>
-					<li class="nav-item"><a class="nav-link" th:href="@{/report}">
-							Sales Report </a></li>
-					<li class="nav-item"><a class="nav-link" th:href="@{/orders}">
-							Orders</a></li>
-					<li class="nav-item"><a class="nav-link"
-						th:href="@{/articles}"> Articles </a></li>
-					<li class="nav-item"><a class="nav-link" th:href="@{/menus}">
-							Menus</a></li>
-					<li class="nav-item"><a class="nav-link"
-						th:href="@{/settings}"> Settings</a></li>
-				</ul>
-			</div>
-		</nav>
-	</div>
-	<ul>
-		<li><a th:href="@{/users}"> USER </a></li>
-	</ul>
-	<div class="container-fluid ">
+	<th:block th:include="fragments :: modalfiles">  </th:block>
+	
+	<th:block th:include="fragments :: navbarfiles"> </th:block>
+	
+ 	<div class="container-fluid ">
 		<div class="container text-center">
-			<h1>Manage User | Create New User</h1>
-			<a th:href="@{/users/new}"> Create New User </a>
+			<h3>Manage User | [[${pageTitle}]]</h3>
 		</div>
 
-		<form th:action="@{/users/save}" method="post"
-			style="max-width: 700px; margin: 0 auto" th:object="${user}"
-			onsubmit="return checkEmailUnique(this);">
+		<form  th:action="@{/users/save}" onsubmit="return checkEmailUnique(this)" method="post"
+			enctype="multipart/form-data"
+			style="max-width: 700px; margin: 0 auto" th:object="${user}">
+			<input type="hidden" th:field="*{id}" />
 			<div class="border border-secondary rounded p-3">
 				<div class="form-group row">
 					<label class="col-sm-4 col-form-Label"> E-mail </label>
-					<div class="col-sm-8">
+					<div class="col-sm-8 mb-2">
 						<input type="email" class="form-control" th:field="*{email}"
 							required minlength="8" maxlength="128" />
 					</div>
+				</div>
+				<div class="form-group row">	
 					<label class="col-sm-4 col-form-Label"> First Name </label>
-					<div class="col-sm-8">
+					<div class="col-sm-8 mb-2">
 						<input type="text" class="form-control" th:field="*{firstName}"
 							required minlength="4" maxlength="45" />
 					</div>
+				</div>
+				<div class="form-group row">	
 					<label class="col-sm-4 col-form-Label"> Last Name</label>
-					<div class="col-sm-8">
+					<div class="col-sm-8 mb-2">
 						<input type="text" class="form-control" th:field="*{lastName}"
 							required minlength="4" max="45" />
 					</div>
+				</div>	
+				<div class="form-group row">	
 					<label class="col-sm-4 col-form-Label"> Password</label>
-					<div class="col-sm-8">
-						<input type="password" class="form-control" th:field="*{password}"
+					<div class="col-sm-8 mb-2">
+					
+						<input th:if="${user.id == null}" type="password" class="form-control" th:field="*{password}"
 							required minlength="8" max="20" />
+						<input th:if="${user.id != null}" type="password" class="form-control" th:field="*{password}"
+							minlength="8" max="20" placeholder="leave empty if don't want to change password"/>
+					
 					</div>
+					</div>
+					<div class="form-group row">
 					<label class="col-sm-4 col-form-Label">enabled</label>
 					<div class="col-sm-8">
 						<input type="checkbox" th:field="*{enabled}" />
 					</div>
+					</div>
+					<div class="form-group row">
 					<label class="col-sm-4 col-form-Label"> ROLES:</label>
 					<div class="col-sm-8">
 						<th:block th:each="role : ${listRoles}">
@@ -121,70 +66,98 @@
 							<br>
 						</th:block>
 					</div>
+				</div>
+				<div class="form-group row">	
+								<label class="col-sm-4 col-form-Label">Photos</label>
+					<div class="col-sm-8">
+					<input type="hidden" th:field="*{photos}" />
+						<input type="file" id="fileImage" name="image" accept="image/png,image/jpeg"/ class="mb-2">
+						<img id="thumbnail" th:src="@{${user.photosImagePath}}" alt="Default User Image"
+						class="img-fluid" width="120px" />
+					</div>
+				</div>
 					<div class="text-center">
-						<input type="submit" value="save" class="btn btn-primary m-3" />
-						<input type="button" value="CANCEL" class="btn btn-secondary"
-							id="buttonCancel" />
+						<input type="submit" value="SAVE" class="btn btn-primary m-3" />
+						<input type="button" value="CANCEL" class="btn btn-secondary" id="buttonCancel" />
 					</div>
 
-
-				</div>
 			</div>
 		</form>
 	</div>
 
 
-
-	<div class="text-center">
-		<p>Shopme Control Panel - Copyright &copy; Shopme</p>
-	</div>
+<th:block th:include="fragments :: footerfiles"> </th:block>
 
 
 	<script type="text/javascript">
 		$(document).ready(function() {
-		//	showModalDialog("RAMAN", "HELLO WORLD");
+			
+		//showModalDialog("RAMAN", "HELLO WORLD");
 			$("#buttonCancel").on("click", function() {
 				window.location = "[[@{/users}]]";
 			});
+			$("#fileImage").change(function() {
+				fileSize = this.files[0].size;
+				//alert("file size" + fileSize);
+				if(fileSize > 1024000) {
+					this.setCustomValidity("You must choose an image less than 1MB!");
+					this.reportValidity();
+					
+				}else{
+				this.setCustomValidity("");
+				showImageThumbnail(this);
+				}
+			});
 		});
 
+		function showImageThumbnail(fileInput){
+				var file = fileInput.files[0];
+				var reader = new FileReader();
+				reader.onload = function(e) {
+					$("#thumbnail").attr("src",e.target.result);
+				};
+				
+				reader.readAsDataURL(file);
+		}
+		
 		function checkEmailUnique(form) {
 
 			url = "[[@{/users/check_email}]]";
 			userEmail = $("#email").val();
 			csrfValue = $("input[name='_csrf']").val();
-
-			params = {
+			userId= $("#id").val();
+			params = { id: userId,
 				email : userEmail,
 				_csrf : csrfValue
 			};
 
 			$.post(url, params, function(response) {
-
+				//alert(response);
 				if (response == "OK") {
 					form.submit();
 				} else if (response == "Duplicated") {
-					alert("Response is Duplicate");
-					showModalDialog("Warning", "Sorry");
+					//alert("Response is Duplicate");
+					showModalDialog("Warning", "Sorry! User with this Email ID  is already registered, try another");
 					return false;
+					
 				} else {
 					showModalDialog("Waring", "Server Prob");
 					return false;
 				}
-				;
-				fail(function() {
+				 fail(function() {
 					showModalDialog("Warning", "SERVER PROB");
 					return false;
-				});
-
-				return false;
+				}); 
 			});
+			return false;
 		}
 
 		function showModalDialog(title, message) {
-			alert("ModalDialog");
-			//$("#modalTitle").text(title);
-			//$("#modalBody").text(message);
+			//alert("ModalDialog");
+			$("#modalTitle").text(title);
+			$("#modalBody").text(message);
+			$("#modal-button").text("Close");
+			
 
 			$("#modalDialog").modal();
 
