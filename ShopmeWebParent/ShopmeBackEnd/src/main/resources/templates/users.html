@@ -13,34 +13,59 @@
 	<div class="container-fluid text-center">
 		<div class="container">
 			<h1>Shopme USER SECTION</h1>
-			<a th:href="@{/users/new}"> Create New User </a>
+			<a th:href="@{/users/new}"> <i class="fas fa-user-plus fa-2x icon-dark"></i></a>
+			&nbsp;&nbsp;
+			<a th:href="@{/users/export/csv}"><i class="fas fa-file-csv  fa-2x icon-dark"></i></a>
+			&nbsp;&nbsp;
+			<a th:href="@{/users/export/xls}"><i class="fas fa-file-excel fa-2x icon-dark"></i></a>
+			&nbsp;&nbsp;
+			<a th:href="@{/users/export/pdf}"><i class="fas fa-file-pdf fa-2x icon-dark"></i></a>
 		</div>
 		<div th:if="${message}" class="alert alert-success text-center">
 			[[${message}]]</div>
-
 		<div>
-			<table
-				class="table table-bordered table-striped  table-hover table-responsive-xl">
+				<form th:action="@{/users/page/1}" class="form-inline m-2 ">
+					Filter :&nbsp;<input type="hidden" name="sortField" th:value="${sortField}" /> 
+						<input type="hidden" name="sortDir"  th:value="${sortDir}" /> 
+						<input type="search" O name="keyword" th:value="${keyword}" class="form-control" required /> 
+						&nbsp;<Button type="submit"  class="btn btn-primary" > <i class="fas fa-search "></i></button>
+						&nbsp;<Button type="button" class="btn btn-secondary" onclick="clearFilter();"/><i class="fas fa-eraser"></i></Button>
+				</form>
+			</div>
+
+		
+		
+		<div class="full-details">
+						<table	class="table table-bordered table-striped  table-hover table-responsive-xl">
 				<thead class="thead-dark">
 					<tr>
-						<th>User Id</th>
+						<th class="hideable-column" >
+						<th  th:replace="fragment_code :: columnLink('id','User ID','tag')">
+						</th>
+						</th>
 						<th>Photos</th>
-						<th>Email</th>
-						<th>First Name</th>
-						<th>Last Name</th>
-						<th>Enabled</th>
+						<th class="hideable-column">
+						<th th:replace="fragment_code :: columnLink('email','E-Mail','tag')">
+						</th>
+						</th>
+						<th th:replace="fragment_code :: columnLink('firstName','First Name','none')">
+						</th>
+						<th th:replace="fragment_code :: columnLink('lastName','Last Name','none')">
+						</th>
 						<th>Roles</th>
+						<th th:replace="fragment_code :: columnLink('enabled','Enabled','none')">
+						</th>
 						<th>Action</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr th:each="user : ${listUsers}">
-						<td>[[${user.id}]]</td>
+						<td class="hideable-column">[[${user.id}]]</td>
 						<td><span th:if="${user.photos == null}"
 							class="fas fa-portrait fa-2x icon-silver"> </span> <img
 							th:if="${user.photos != null}"
 							th:src="@{${user.photosImagePath}}" alt"" width="70px" /></td>
-						<td>[[${user.email}]]</td>
+						<td class="hideable-column">[[${user.email}]]</td>
 						<td>[[${user.firstName}]]</td>
 						<td>[[${user.lastName}]]</td>
 						<td>[[${user.roles}]]</td>
@@ -63,32 +88,72 @@
 			</table>
 
 		</div>
+		<!--  for small screen-->
+		<div class=" less-details">
+			<div th:each="user : ${listUsers}" class="row m-2">
+				<div><span th:if="${user.photos == null}"
+							class="fas fa-portrait fa-2x icon-silver"> </span> <img
+							th:if="${user.photos != null}"
+							th:src="@{${user.photosImagePath}}" alt"" width="70px" />
+				</div>
+				<div >&nbsp;	</div>
+				<div class="col" >
+					<div>[[${user.fullName}]]</div>
+					<div>[[${user.roles}]]</div>
+					<div><a th:if="${user.enabled == true}"
+							class="fas fa-check-circle fa-2x icon-green"
+							th:href="@{'/users/' + ${user.id} + '/enabled/false'}"
+							title="Click Here! to Disable"></a>&nbsp; <a
+							th:if="${user.enabled == false}"
+							class="fas fa-check-circle fa-2x icon-dark"
+							th:href="@{'/users/' + ${user.id} + '/enabled/true'}"
+							title="Click Here! to Enable"></a>&nbsp;<a class="fas fa-edit fa-2x icon-green"
+							th:href="@{'/users/edit/'+${user.id}}"
+							title="Click! here to Edit"></a> &nbsp; <a
+							class="fas fa-trash fa-2x icon-dark Link-Delete"
+							th:href="@{'/users/delete/'+${user.id}}" th:userIds="${user.id}"
+							title="Click! here to Delete"></a> 
+					</div>
+				</div>
+			</div>
+		</div>
 		<div th:if="${totalItems >0}">
 			<span>Showing user # [[${startCount}]] to [[${endCount}]] of
 				[[${totalItems}]]</span>
 		</div>
 		<div th:unless="${totalItems >0}">
-			<span>No Users to Show! </span>
+			<span><h2> No Users to Show! </h2></span>
 		</div>
-		<div>
-			<nav >
-				<ul class="pagination justify-content-center hover">
-					<li th:class="${currentPage >1  ? 'page-item' : 'page-item disabled'}">
-					<a class="page-link" th:href="@{/users/page/1}">First</a></li>
-					<li th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
-					<a class="page-link" th:href="@{'/users/page/' + ${currentPage -1}}">Previous</a></li>
-					
-					<li th:class="${currentPage != i ? 'page-item' : 'page-item active'}" th:each="i : ${#numbers.sequence(1, totalPages)}">
-					<a class="page-link" th:href="@{'/users/page/' + ${i}}">[[${i}]]</a>
+		<div th:if="${totalPages > 1}">
+			<nav>
+				<ul class="pagination justify-content-center hover flex-wrap">
+					<li
+						th:class="${currentPage >1  ? 'page-item' : 'page-item disabled'}">
+						<a th:replace="fragment_code :: page_Link(1,'First')"> </a>
+					</li>
+					<li
+						th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
+						<a th:replace="fragment_code :: page_Link(${currentPage -1},'Previous')"> </a>
 					</li>
 
-					<li th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}">
-					<a class="page-link" th:href="@{'/users/page/' + ${currentPage +1}}">Next</a></li>
-					<li th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}">
-					<a class="page-link" th:href="@{'/users/page/' + ${totalPages}}">Last</a></li>
+					<li
+						th:class="${currentPage != i ? 'page-item' : 'page-item active'}"
+						th:each="i : ${#numbers.sequence(1, totalPages)}">
+						<a th:replace="fragment_code :: page_Link(${i},${i})"> </a>
+					</li>
+
+					<li
+						th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}">
+						<a th:replace="fragment_code :: page_Link(${currentPage +1},'Next')"> </a>
+					</li>
+					<li
+						th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}">
+						<a th:replace="fragment_code :: page_Link(${totalPages},'Last')"> </a>
+					</li>
 				</ul>
 			</nav>
 		</div>
+		
 	</div>
 
 	<th:block th:include="fragments :: footerfiles">
@@ -124,7 +189,14 @@
 			$("#modalDialog").modal();
 
 		}
-	</script>
+		
+	
+			function clearFilter(){
+				window.location = "[[@{/users}]]";
+				//window.location="/ShopmeAdmin/users";
+				}
+
+			</script>
 
 </body>
 </html>

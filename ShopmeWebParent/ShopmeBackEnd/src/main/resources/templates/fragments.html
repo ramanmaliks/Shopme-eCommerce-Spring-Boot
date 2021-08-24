@@ -44,6 +44,9 @@
 
 	<div th:fragment="navbarfiles">
 	<div>
+		<form th:action="@{/logout}" method="post" th:hidden="true" name="logoutForm">
+			<input type="submit" />
+		</form>	
 		<nav class="navbar navbar-expand-lg navbar-light bg-light ">
 			<a class="nav-brand" th:href="@{/}"><img
 				th:src="@{/images/shopmeAdminSmall.png}" /> </a>
@@ -79,16 +82,35 @@
 							Menus</a></li>
 					<li class="nav-item"><a class="nav-link"
 						th:href="@{/settings}"> Settings</a></li>
+					<li class="nav-item"><i class="fas fa-user fa-2x icon-silver"></i></li>
+					<li class="nav-item dropdown"> 
+						<a class="nav-link dropdown-toggle" data-toggle="dropdown"
+					sec:authentication="principal.fullname"></a>
+						<div class="dropdown-menu">
+						
+						<a class="dropdown-item" id="logoutLink" href="">Logout</a>
+						
+						</div>
+						</li>
 				</ul>
 			</div>
 		</nav>
 	</div>
-	</div><!-- navbarfiles ends here  -->
+</div><!-- navbarfiles ends here  -->
 	
 	<div th:fragment="footerfiles">
 		<div class="text-center">
 		<p>Shopme Control Panel - Copyright &copy; Shopme</p>
 	</div>
+	<script type="text/javascript">
+	$(document).ready(function() {
+		$("#logoutLink").on("click", function(e){
+			e.preventDefault();
+			document.logoutForm.submit();
+		});
+	});
+	</script>
 	</div>
+	
 </body>
 </html>
